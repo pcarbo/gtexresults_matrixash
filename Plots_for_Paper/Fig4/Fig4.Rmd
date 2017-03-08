@@ -1,8 +1,10 @@
 ---
 title: "Figure4"
-output: html_document
+output: pdf_document
 ---
 
+
+##This is the OLD
 
 ```{r}
 library('knitr')

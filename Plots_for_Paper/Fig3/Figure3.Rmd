@@ -14,7 +14,7 @@ covmat=readRDS("../..//Results_Data/covmatwithzero.rds")
 z.stat=read.table("../../Data/maxz.txt")
 names=colnames(z.stat)
 pis=readRDS("../../Results_Data/piswithzero.rds")$pihat
-pi.mat=matrix(pis,ncol=54,nrow=22,byrow = T)
+pi.mat=matrix(pis[-length(pis)],ncol=54,nrow=22,byrow = T)
 ```
 
 ```{r corplotuk3,fig.height=10,fig.width=10}

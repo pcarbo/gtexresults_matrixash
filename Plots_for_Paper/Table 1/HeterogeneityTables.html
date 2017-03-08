@@ -123,6 +123,28 @@ $(document).ready(function () {
 <div id="heterogeneity-analysis" class="section level2">
 <h2>Heterogeneity Analysis</h2>
 <p>First, we asked in how many tissues is a QTL signficiant.</p>
+<pre class="r"><code>lfsr=read.table(&quot;../../Results_Data/withzerolfsr.txt&quot;)[,-1]
+lfsr[lfsr&lt;0]=0
+lfsr.nobrain=read.table(&quot;../../withoutbrain/nobrainlfsr.txt&quot;)[,-1]
+lfsr.brain.only=read.table(&quot;../../BrainOnly/brainonlylfsr.txt&quot;)[,-1]
+
+tissue.names=as.character(read.table(&quot;../../Data/abbreviate.names.txt&quot;)[,2])
+colnames(lfsr)=tissue.names
+colnames(lfsr.nobrain)=tissue.names[-c(7:16)]
+colnames(lfsr.brain.only)=tissue.names[c(7:16)]
+
+
+maxbeta=read.table(&quot;../../Data/maxbetahats.txt&quot;)
+maxz=read.table(&quot;../../Data/maxz.txt&quot;)
+standard.error=read.table(&quot;../../Data/standard.error.txt&quot;)
+pm.mash=as.matrix(read.table(&quot;../../Results_Data/withzeroposterior.means.txt&quot;)[,-1])
+pm.mash.beta=pm.mash*standard.error
+
+pm.mash.nobrain=as.matrix(read.table(&quot;../../withoutbrain/nobrainposterior.means.txt&quot;)[,-1])*standard.error[,-c(7:16)]
+
+pm.mash.brain.only=as.matrix(read.table(&quot;../../BrainOnly//brainonlyposterior.means.txt&quot;)[,-1])*standard.error[,c(7:16)]
+
+thresh=0.05</code></pre>
 <p>Here, we show the Proportion of Sharing by Sign:</p>
 <pre class="r"><code>sigmat=(lfsr&lt;=thresh)
 nsig= rowSums(sigmat)

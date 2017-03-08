@@ -14,7 +14,7 @@ source("../../Analysis/normfuncs.R")
 ##Heterogeneity Analysis
 
 First, we asked in how many tissues is a QTL signficiant. 
-```{r loaddata,echo=F}
+```{r loaddata,echo=T}
 
 lfsr=read.table("../../Results_Data/withzerolfsr.txt")[,-1]
 lfsr[lfsr<0]=0
