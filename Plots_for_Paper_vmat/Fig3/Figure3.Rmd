@@ -1,7 +1,7 @@
 ---
 title: "Uk3"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_document
+output: rmarkdown::pdf_document
 ---
 
 Here we plot the correlation matrix and the first 3 eigenvectors of Uk3.
@@ -11,7 +11,7 @@ Here we plot the correlation matrix and the first 3 eigenvectors of Uk3.
 ```{r chunk_options, include = FALSE}
 knitr::opts_chunk$set(cache = TRUE,collapse = TRUE,comment = "#",
                       fig.path = "figures/Figure3.Rmd",fig.align = "center",
-                      fig.width = 8,fig.height = 6,fig.cap = "&nbsp;") 
+                      fig.width = 8,fig.height = 6) 
 ```
 
 Begin by loading these packages into your R environment.
