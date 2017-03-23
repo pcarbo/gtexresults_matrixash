@@ -1,81 +1,92 @@
 ---
 title: "Uk3"
-output: pdf_document
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
 ---
+
 Here we plot the correlation matrix and the first 3 eigenvectors of Uk3.
 
-```{r,echo=T}
-library('knitr')
+*What is Uk3? A data set? Please briefly explain.*
 
-knitr::opts_chunk$set(cache=TRUE)
-opts_chunk$set(fig.path = "/Users/sarahurbut/Dropbox/PaperEdits/Paper/NGRevision/Figureswithres/") 
-covmat=readRDS("../../Data_vhat/covmatwithvhat.rds")
-
-z.stat=read.table("../../Data/maxz.txt")
-names=colnames(z.stat)
-pis=readRDS("../../Data_vhat/piswithvhat.rds")$pihat
-pi.mat=matrix(pis[-length(pis)],ncol=54,nrow=22,byrow = T)
-
-names=colnames(z.stat)
-colnames(pi.mat)=c("ID","X'X","SVD","F1","F2","F3","F4","F5","SFA_Rank5",c(names,"ALL"))
-
-barplot(colSums(pi.mat),main='WithVmat',las=2,cex.names=0.5)
+```{r chunk_options, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE,collapse = TRUE,comment = "#",
+                      fig.path = "figures/Figure3.Rmd",fig.align = "center",
+                      fig.width = 8,fig.height = 6,fig.cap = "&nbsp;") 
 ```
 
-```{r corplotuk3,fig.height=10,fig.width=10}
+Begin by loading these packages into your R environment.
+
+```{r packages, message = FALSE}
 library(gplots)
 library(ggplot2)
-library('colorRamps')
-#install.packages("fields")
+library(colorRamps)
 library(fields)
-k=3
-hclust.2=function (d, method = "average", members = NULL) {hclust(d, method, members)}
-  x=cov2cor(covmat[[k]])
-x[x<0]=0
-  colnames(x)=names
-  rownames(x)=names
-
-
-h=read.table("../../Analysis/uk3rowindices.txt")[,1]
+library(lattice)
 ```
 
-Now we orduce the heatmap. Note that this is flipped in the paper:
+**TO DO:** *Briefly explain here what this code chunk does. It looks like
+it is loading the data and/or results and then generates a brief summary of 
+the data in a bar chart.*
 
-```{r heatmapuk3final,fig.height=10,fig.width=10}
+```{r load_results, fig.width = 10}
+covmat = readRDS("../../Data_vhat/covmatwithvhat.rds")
+z.stat = read.table("../../Inputs/maxz.txt")
+names  = colnames(z.stat)
+pis    = readRDS("../../Data_vhat/piswithvhat.rds")$pihat
+pi.mat = matrix(pis[-length(pis)],ncol = 54,nrow = 22,byrow = T)
+names  = colnames(z.stat)
+colnames(pi.mat) = 
+  c("ID","X'X","SVD","F1","F2","F3","F4","F5","SFA_Rank5",c(names,"ALL"))
+barplot(colSums(pi.mat),main = 'WithVmat',las = 2,cex.names = 0.5)
+```
 
-smat=(x[(h),(h)])
+**TO DO:** *Briefly explain here what this code chunk does.*
+
+```{r corplotuk3, fig.height = 10, fig.width = 10}
+k = 3
+hclust.2 = function (d, method = "average", members = NULL)
+  hclust(d, method, members)
+x = cov2cor(covmat[[k]])
+x[x < 0] = 0
+colnames(x) = names
+rownames(x) = names
+h = read.table("../../Data/uk3rowindices.txt")[,1]
+```
+
+Now we produce the heatmap. Note that this is flipped in the paper:
+
+```{r heatmapuk3final,fig.height = 10,fig.width = 10}
+smat = (x[(h),(h)])
 smat[lower.tri(smat)] <- NA
-
-library(lattice)
-
-#print(levelplot(smat,col.regions = jet.colors,xlab = "",ylab = "",colorkey = TRUE))
-
-
-
-#clrs <- colorRampPalette(rev(c("purple","#FC8D59","#FEE090","#FFFFBF","#E0F3F8","#91BFDB","#4575B4")))(64)
-
 clrs <- colorRampPalette(rev(c("#D73027","#FC8D59","#FEE090","#FFFFBF",
                                "#E0F3F8","#91BFDB","#4575B4")))(64)
-lat=x[rev(h),rev(h)]
-#lat=x[h,h]
+lat = x[rev(h),rev(h)]
 lat[lower.tri(lat)] <- NA
-n=nrow(lat)
-print(levelplot(lat[n:1,],col.regions = clrs,xlab = "",ylab = "",colorkey = TRUE,at=seq(0,1,length.out=64)))
-
-#print(levelplot(lat,col.regions = clrs,xlab = "",ylab = "",colorkey = TRUE))
+n = nrow(lat)
+levelplot(lat[n:1,],col.regions = clrs,xlab = "",ylab = "",
+          colorkey = TRUE,at = seq(0,1,length.out = 64),
+          scales = list(x = list(rot = 45)))
 ```
 
 Now let's do the eigenplots:
 
-```{r}
-missing.tissues=c(7,8,19,20,24,25,31,34,37)
-color.gtex=read.table("../../Data/GTExColors.txt",sep = '\t', comment.char = '')[-missing.tissues,]
-
+```{r eigenplots, fig.height = 4, fig.cap = ""}
+missing.tissues = c(7,8,19,20,24,25,31,34,37)
+color.gtex = read.table("../../Data/GTExColors.txt",sep = '\t', 
+                        comment.char = '')[-missing.tissues,]
 k=3
 vold=svd(covmat[[k]])$v;u=svd(covmat[[k]])$u
-
-v=vold[h,]##shuffle so correct order
+v=vold[h,]
 names=names[h]
 color.gtex=color.gtex[h,]
-for(j in 1:3){
-barplot(v[,j]/v[,j][which.max(abs(v[,j]))],names="",cex.names=0.5,las=2,main=paste0("EigenVector",j,"Uk",k),col = as.character(color.gtex[,2]))}
+for(j in 1:3)
+  barplot(v[,j]/v[,j][which.max(abs(v[,j]))],names="",cex.names = 0.5,
+          las = 2,main = paste0("EigenVector",j,"Uk",k),
+          col = as.character(color.gtex[,2]))
+```
+
+## Session information.
+
+```{r info}
+print(sessionInfo())
+```

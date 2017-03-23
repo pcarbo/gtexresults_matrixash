@@ -1,16 +1,28 @@
 # gtexresults_mash
 
-The purpose of this repo is to store the results of  the mixture model, which uses a mixture of multivariate normals to estimate the effect size of a genetic variant on gene expression across 44 tissues, as ascertained from the GTEX project.
+The purpose of this repo is to store the results of the mixture model,
+which uses a mixture of multivariate normals to estimate the effect
+size of a genetic variant on gene expression across 44 tissues, as
+ascertained from the GTEX project.
 
 ## Using this Repo
 
-In this directory, under the folder *scripts* you will find the notated script, `MidwayScripts.Rmd` to reproduce the results found in Urbut et al.
+In this directory, under the folder *scripts* you will find the
+notated script, `MidwayScripts.Rmd` to reproduce the results found in
+Urbut et al.
 
-1) You'll note that the input data necessary to run this analysis is all available under inputs. This may take some time to run, and so we recommend using a cluster or submittable file system. We have conveniently provided the user with the outputs of running mash in **Data_vhat**.
+1) You'll note that the input data necessary to run this analysis is
+all available under inputs. This may take some time to run, and so we
+recommend using a cluster or submittable file system. We have
+conveniently provided the user with the outputs of running mash in
+**Data_vhat**.
 
-This repo is organized so that you can run Mash using the gteX data contained in **Inputs** to produce the parameters and posteriors from mashr.
+This repo is organized so that you can run Mash using the gteX data
+contained in **Inputs** to produce the parameters and posteriors from
+mashr.
 
-2) The script, `MidwayScripts.Rmd` here will help you to produce several sets of files
+2) The script, `MidwayScripts.Rmd` here will help you to produce
+several sets of files
 	
 	1)`ms=deconvolution.em.with.bovy(t.stat,factor.mat,v.j,lambda.mat,K=3,	P=3)`
 
